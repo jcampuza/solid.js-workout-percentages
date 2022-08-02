@@ -3,7 +3,12 @@ import { Component, createEffect, createSignal, For } from 'solid-js';
 const key = '$$s$$';
 const coefficient = 2.20462;
 const fix = (value: number) => Number(value.toFixed(2));
-const PERCENTAGES = [0.675, 0.75, 0.825];
+
+const PERCENTAGES = [65, 70, 75, 80, 85, 90].map((n) => n / 100);
+const calculateOneRepMax = (weight: number, reps: number) => {
+  const value = weight + (weight / 30) * reps;
+  return fix(value);
+};
 
 const App: Component = () => {
   const values = JSON.parse(localStorage.getItem(key) ?? '{}');
