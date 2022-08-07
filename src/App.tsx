@@ -5,10 +5,6 @@ const coefficient = 2.20462;
 const fix = (value: number) => Number(value.toFixed(2));
 
 const PERCENTAGES = [65, 70, 75, 80, 85, 90].map((n) => n / 100);
-const calculateOneRepMax = (weight: number, reps: number) => {
-  const value = weight + (weight / 30) * reps;
-  return fix(value);
-};
 
 const App: Component = () => {
   const values = JSON.parse(localStorage.getItem(key) ?? '{}');
@@ -85,9 +81,10 @@ const App: Component = () => {
       <table>
         <thead>
           <tr>
-            <th>Percentage</th>
-            <th>Weight (lbs)</th>
-            <th>Weight (kg)</th>
+            <th>%</th>
+            <th>lbs</th>
+            <th>kg</th>
+            <th>~kg</th>
           </tr>
         </thead>
         <tbody>
@@ -97,13 +94,14 @@ const App: Component = () => {
                 <td>{percentage * 100}%</td>
                 <td>{fix(max() * percentage)}</td>
                 <td>{fix((max() * percentage) / coefficient)}</td>
+                <td>{fix(Math.round((max() * percentage) / coefficient / 5) * 5)}</td>
               </tr>
             )}
           </For>
         </tbody>
       </table>
 
-      <ul style={{ 'margin-top': '4rem' }}>
+      <ul class="stack">
         <li>
           <label class="field">
             <span>Kilograms</span>
