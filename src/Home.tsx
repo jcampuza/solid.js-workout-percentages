@@ -1,4 +1,5 @@
 import { Component, createEffect, createSignal, For } from 'solid-js';
+import { getSettings } from './utils';
 
 const key = '$$s$$';
 const coefficient = 2.20462;
@@ -6,7 +7,7 @@ const fix = (value: number) => Number(value.toFixed(2));
 
 const PERCENTAGES = [65, 70, 75, 80, 85, 90].map((n) => n / 100);
 
-const App: Component = () => {
+const Home: Component = () => {
   const values = JSON.parse(localStorage.getItem(key) ?? '{}');
   const [kgs, setKg] = createSignal(values.kgs ?? 0);
   const [lbs, setLbs] = createSignal(values.lbs ?? 0);
@@ -54,6 +55,16 @@ const App: Component = () => {
     updateKgFromLbs();
   }
 
+  function useSquatMax() {
+    const { squat } = getSettings();
+    setMax(squat);
+  }
+
+  function useBenchMax() {
+    const { bench } = getSettings();
+    setMax(bench);
+  }
+
   createEffect(() => {
     localStorage.setItem(
       key,
@@ -78,6 +89,10 @@ const App: Component = () => {
             onInput={(e) => setMax(Number(e.currentTarget.value))}
           />
         </label>
+      </div>
+      <div class="button-group">
+        <button onClick={useSquatMax}>Use Squat Max</button>
+        <button onClick={useBenchMax}>Use Bench Max</button>
       </div>
 
       <table>
@@ -117,8 +132,10 @@ const App: Component = () => {
             <span>Kilograms</span>
             <input value={kgs()} type="number" pattern="[0-9]*" onInput={handleKgsChange} />
           </label>
-          <button onClick={kgPlus}>+</button>
-          <button onClick={kgMinus}>-</button>
+          <div class="button-group">
+            <button onClick={kgPlus}>+</button>
+            <button onClick={kgMinus}>-</button>
+          </div>
         </li>
 
         <li>
@@ -126,12 +143,14 @@ const App: Component = () => {
             <span>Pounds</span>
             <input value={lbs()} type="number" pattern="[0-9]*" onInput={handleLbsChange} />
           </label>
-          <button onClick={lbsPlus}>+</button>
-          <button onClick={lbsMinus}>-</button>
+          <div class="button-group">
+            <button onClick={lbsPlus}>+</button>
+            <button onClick={lbsMinus}>-</button>
+          </div>
         </li>
       </ul>
     </main>
   );
 };
 
-export default App;
+export default Home;
