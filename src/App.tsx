@@ -12,6 +12,8 @@ const App: Component = () => {
   const [lbs, setLbs] = createSignal(values.lbs ?? 0);
   const [max, setMax] = createSignal(values.max ?? 0);
 
+  const maxInKg = () => max() / coefficient;
+
   function updateLbsFromKg() {
     setLbs(fix(kgs() * coefficient));
   }
@@ -84,19 +86,27 @@ const App: Component = () => {
             <th>%</th>
             <th>lbs</th>
             <th>kg</th>
-            <th>~kg</th>
+            <th>~kg (% actual)</th>
           </tr>
         </thead>
         <tbody>
           <For each={PERCENTAGES}>
-            {(percentage) => (
-              <tr>
-                <td>{percentage * 100}%</td>
-                <td>{fix(max() * percentage)}</td>
-                <td>{fix((max() * percentage) / coefficient)}</td>
-                <td>{fix(Math.round((max() * percentage) / coefficient / 5) * 5)}</td>
-              </tr>
-            )}
+            {(percentage) => {
+              const roundedAmount = () =>
+                fix(Math.round((max() * percentage) / coefficient / 5) * 5);
+
+              const actualPercent = () => fix(roundedAmount() / maxInKg());
+              return (
+                <tr>
+                  <td>{percentage * 100}%</td>
+                  <td>{fix(max() * percentage)}</td>
+                  <td>{fix((max() * percentage) / coefficient)}</td>
+                  <td>
+                    {roundedAmount()} ({actualPercent}%)
+                  </td>
+                </tr>
+              );
+            }}
           </For>
         </tbody>
       </table>
