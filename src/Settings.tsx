@@ -72,7 +72,7 @@ const Settings: Component = () => {
           {saved() ? <span style={{ 'margin-left': '1rem' }}>Saved!</span> : null}
         </div>
         <Show when={getLastUpdatedTime()}>
-          <div>Last Updated: {getLastUpdatedTime()}</div>
+          <div style={{ 'margin-top': '1rem' }}>Last Updated: {getLastUpdatedTime()}</div>
         </Show>
       </form>
     </main>
