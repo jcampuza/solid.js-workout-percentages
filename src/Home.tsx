@@ -108,7 +108,7 @@ const Home: Component = () => {
           <For each={PERCENTAGES}>
             {(percentage) => {
               const roundedAmount = () =>
-                fix(Math.round((max() * percentage) / coefficient / 5) * 5);
+                fix(Math.round((max() * percentage) / coefficient / 2.5) * 2.5);
 
               const actualPercent = () => fix(roundedAmount() / maxInKg());
               return (
