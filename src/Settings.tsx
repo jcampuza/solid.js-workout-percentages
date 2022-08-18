@@ -1,4 +1,4 @@
-import { Component, createEffect, createSignal, onCleanup, Show } from 'solid-js';
+import { Component, createSignal, onCleanup, Show } from 'solid-js';
 import { fix, getSettings, updateSettings } from './utils';
 
 const Settings: Component = () => {
@@ -50,30 +50,34 @@ const Settings: Component = () => {
   };
 
   return (
-    <main>
+    <main class="p-4">
       <form onSubmit={handleSubmit}>
-        <ul class="stack">
-          <li>
-            <label class="field">
-              <span>Bench Training Max</span>
-              <input value={bench()} type="number" pattern="[0-9]*" onInput={handleBenchChange} />
-            </label>
-          </li>
+        <div class="space-y-4">
+          <ul class="space-y-4">
+            <li>
+              <label class="flex flex-col">
+                <span>Bench Training Max</span>
+                <input value={bench()} type="number" pattern="[0-9]*" onInput={handleBenchChange} />
+              </label>
+            </li>
 
-          <li>
-            <label class="field">
-              <span>Squat Training Max</span>
-              <input value={squat()} type="number" pattern="[0-9]*" onInput={handleSquatChange} />
-            </label>
-          </li>
-        </ul>
-        <div>
-          <button type="submit">Update</button>
-          {saved() ? <span style={{ 'margin-left': '1rem' }}>Saved!</span> : null}
+            <li>
+              <label class="flex flex-col">
+                <span>Squat Training Max</span>
+                <input value={squat()} type="number" pattern="[0-9]*" onInput={handleSquatChange} />
+              </label>
+            </li>
+          </ul>
+
+          <div>
+            <button type="submit">Update</button>
+            {saved() ? <span style={{ 'margin-left': '1rem' }}>Saved!</span> : null}
+          </div>
+
+          <Show when={getLastUpdatedTime()}>
+            <div style={{ 'margin-top': '1rem' }}>Last Updated: {getLastUpdatedTime()}</div>
+          </Show>
         </div>
-        <Show when={getLastUpdatedTime()}>
-          <div style={{ 'margin-top': '1rem' }}>Last Updated: {getLastUpdatedTime()}</div>
-        </Show>
       </form>
     </main>
   );

@@ -3,24 +3,11 @@ import { Component } from 'solid-js';
 
 export const Nav: Component = () => {
   return (
-    <nav
-      style={{
-        'margin-top': 'auto',
-        'border-top': '1px solid rebeccapurple',
-        display: 'flex',
-        'align-items': 'center',
-        'justify-content': 'space-around',
-      }}
-    >
+    <nav class="mt-auto border-t border-purple-900 flex items-center justify-around">
       <Link
         href="/"
         title="Home"
-        style={{
-          padding: '1rem',
-          'text-align': 'center',
-          width: '100%',
-          'border-right': '1px solid rebeccapurple',
-        }}
+        class="p-4 text-center w-full border-r border-purple-900 flex justify-center"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +15,7 @@ export const Nav: Component = () => {
           height={24}
           fill="none"
           viewBox="0 0 24 24"
-          stroke="currentColor"
+          class="stroke-purple-900"
           stroke-width={2}
         >
           <path
@@ -42,18 +29,14 @@ export const Nav: Component = () => {
       <Link
         href="/settings"
         title="Settings"
-        style={{
-          padding: '1rem',
-          'text-align': 'center',
-          width: '100%',
-        }}
+        class="p-4 text-center w-full border-purple-900 flex justify-center"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={24}
           height={24}
           fill="none"
-          stroke="rebeccapurple"
+          class="stroke-purple-900"
           viewBox="0 0 24 24"
           stroke-width={2}
         >

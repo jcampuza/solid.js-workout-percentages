@@ -4,8 +4,7 @@ import { getSettings } from './utils';
 const key = '$$s$$';
 const coefficient = 2.20462;
 const fix = (value: number) => Number(value.toFixed(2));
-
-const PERCENTAGES = [65, 70, 75, 80, 85, 90].map((n) => n / 100);
+const PERCENTAGES = [65, 70, 75, 80, 85, 90, 95].map((n) => n / 100);
 
 const Home: Component = () => {
   const values = JSON.parse(localStorage.getItem(key) ?? '{}');
@@ -15,55 +14,55 @@ const Home: Component = () => {
 
   const maxInKg = () => max() / coefficient;
 
-  function updateLbsFromKg() {
+  const updateLbsFromKg = () => {
     setLbs(fix(kgs() * coefficient));
-  }
+  };
 
-  function updateKgFromLbs() {
+  const updateKgFromLbs = () => {
     setKg(fix(lbs() / coefficient));
-  }
+  };
 
-  function kgPlus() {
+  const kgPlus = () => {
     setKg(kgs() + 1);
     updateLbsFromKg();
-  }
+  };
 
-  function kgMinus() {
+  const kgMinus = () => {
     setKg(kgs() - 1);
     updateLbsFromKg();
-  }
+  };
 
-  function handleKgsChange(event: InputEvent) {
+  const handleKgsChange = (event: InputEvent) => {
     const kgs = Number((event.currentTarget as HTMLInputElement).value);
     setKg(kgs);
     updateLbsFromKg();
-  }
+  };
 
-  function lbsPlus() {
+  const lbsPlus = () => {
     setLbs(lbs() + 1);
     updateKgFromLbs();
-  }
+  };
 
-  function lbsMinus() {
+  const lbsMinus = () => {
     setLbs(lbs() - 1);
     updateKgFromLbs();
-  }
+  };
 
-  function handleLbsChange(event: InputEvent) {
+  const handleLbsChange = (event: InputEvent) => {
     const lbs = Number((event.currentTarget as HTMLInputElement).value);
     setLbs(lbs);
     updateKgFromLbs();
-  }
+  };
 
-  function useSquatMax() {
+  const useSquatMax = () => {
     const { squat } = getSettings();
     setMax(squat);
-  }
+  };
 
-  function useBenchMax() {
+  const useBenchMax = () => {
     const { bench } = getSettings();
     setMax(bench);
-  }
+  };
 
   createEffect(() => {
     localStorage.setItem(
@@ -77,9 +76,9 @@ const Home: Component = () => {
   });
 
   return (
-    <main>
-      <div>
-        <label class="field">
+    <main class="p-4">
+      <div class="space-y-2">
+        <label class="flex flex-col">
           <span>Training Max (lbs)</span>
 
           <input
@@ -89,36 +88,37 @@ const Home: Component = () => {
             onInput={(e) => setMax(Number(e.currentTarget.value))}
           />
         </label>
-      </div>
-      <div class="button-group">
-        <button onClick={useSquatMax}>Use Squat Max</button>
-        <button onClick={useBenchMax}>Use Bench Max</button>
+        <div class="flex gap-2">
+          <button onClick={useSquatMax}>Use Squat Max</button>
+          <button onClick={useBenchMax}>Use Bench Max</button>
+        </div>
       </div>
 
       <table>
         <thead>
           <tr>
             <th>%</th>
-            <th>lbs</th>
             <th>kg</th>
-            <th>~kg (% actual)</th>
+            <th>kg -> lbs</th>
+            <th>%</th>
           </tr>
         </thead>
         <tbody>
           <For each={PERCENTAGES}>
             {(percentage) => {
-              const roundedAmount = () =>
-                fix(Math.round((max() * percentage) / coefficient / 2.5) * 2.5);
+              
+              const roundedAmountKg = () => fix(Math.round((max() * percentage) / coefficient / 2.5) * 2.5);
+              
+              const roundedAmountLbs = () => fix(roundedAmountKg() * coefficient);
 
-              const actualPercent = () => fix(roundedAmount() / maxInKg());
+              const actualPercent = () => fix(roundedAmountKg() / maxInKg());
+
               return (
                 <tr>
                   <td>{percentage * 100}%</td>
-                  <td>{fix(max() * percentage)}</td>
-                  <td>{fix((max() * percentage) / coefficient)}</td>
-                  <td>
-                    {roundedAmount()} ({actualPercent}%)
-                  </td>
+                  <td>{roundedAmountKg()}</td>
+                  <td>{roundedAmountLbs()}</td>
+                  <td>{actualPercent()}%</td>
                 </tr>
               );
             }}
@@ -126,24 +126,25 @@ const Home: Component = () => {
         </tbody>
       </table>
 
-      <ul class="stack">
-        <li>
-          <label class="field">
+      <ul class="space-y-4">
+        <li class="space-y-2">
+          <label class="flex flex-col">
             <span>Kilograms</span>
             <input value={kgs()} type="number" pattern="[0-9]*" onInput={handleKgsChange} />
           </label>
-          <div class="button-group">
+
+          <div class="flex gap-2">
             <button onClick={kgPlus}>+</button>
             <button onClick={kgMinus}>-</button>
           </div>
         </li>
 
-        <li>
-          <label class="field">
+        <li class="space-y-2">
+          <label class="flex flex-col">
             <span>Pounds</span>
             <input value={lbs()} type="number" pattern="[0-9]*" onInput={handleLbsChange} />
           </label>
-          <div class="button-group">
+          <div class="flex gap-2">
             <button onClick={lbsPlus}>+</button>
             <button onClick={lbsMinus}>-</button>
           </div>

@@ -1,26 +1,18 @@
 /* @refresh reload */
-import { Link, Route, Router, Routes } from '@solidjs/router';
+import { Route, Router, Routes } from '@solidjs/router';
 import { render } from 'solid-js/web';
-import Settings from './Settings';
-import Home from './Home';
-import './index.css';
 import { Nav } from './Nav';
+import { lazy } from 'solid-js';
+import './index.css';
+
+const Home = lazy(() => import('./Home'));
+const Settings = lazy(() => import('./Settings'));
 
 render(
   () => (
     <Router>
-      <div
-        style={{
-          height: '100%',
-          display: 'flex',
-          'flex-direction': 'column',
-        }}
-      >
-        <div
-          style={{
-            overflow: 'auto',
-          }}
-        >
+      <div class="h-screen flex flex-col">
+        <div class="overflow-auto">
           <Routes>
             <Route path="/" component={Home}></Route>
             <Route path="/settings" component={Settings}></Route>
