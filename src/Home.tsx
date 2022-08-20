@@ -99,16 +99,16 @@ const Home: Component = () => {
           <tr>
             <th>%</th>
             <th>kg</th>
-            <th>kg -> lbs</th>
+            <th>kg -&gt; lbs</th>
             <th>%</th>
           </tr>
         </thead>
         <tbody>
           <For each={PERCENTAGES}>
             {(percentage) => {
-              
-              const roundedAmountKg = () => fix(Math.round((max() * percentage) / coefficient / 2.5) * 2.5);
-              
+              const roundedAmountKg = () =>
+                fix(Math.round((max() * percentage) / coefficient / 2.5) * 2.5);
+
               const roundedAmountLbs = () => fix(roundedAmountKg() * coefficient);
 
               const actualPercent = () => fix(roundedAmountKg() / maxInKg());
